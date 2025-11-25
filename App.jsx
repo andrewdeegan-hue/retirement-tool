@@ -40,7 +40,8 @@ const HISTORICAL_DATA = [
 
 const GEO_MEAN = 0.067; 
 
-const RiskDashboard = () => {
+// --- THE FIX: Define 'App' properly before using hooks inside it ---
+const App = () => {
   const [initialWealth, setInitialWealth] = useState(1000000);
   const [withdrawalRate, setWithdrawalRate] = useState(4.0);
   const [duration, setDuration] = useState(25);
@@ -379,4 +380,4 @@ const RiskDashboard = () => {
   );
 };
 
-export default App
+export default App;
