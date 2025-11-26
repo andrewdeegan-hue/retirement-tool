@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { AlertTriangle, TrendingDown, TrendingUp, Info, DollarSign, Calendar, Percent, BarChart2, Activity } from 'lucide-react';
+import { AlertTriangle, TrendingDown, TrendingUp, Info, DollarSign, Calendar, Percent, BarChart2, Activity, Database } from 'lucide-react';
 
 // --- DATA ---
+// S&P 500 Real Returns (Inflation Adjusted)
 const HISTORICAL_DATA = [
   { year: 1928, return: 0.4549 }, { year: 1929, return: -0.0883 }, { year: 1930, return: -0.2001 },
   { year: 1931, return: -0.3807 }, { year: 1932, return: 0.0182 }, { year: 1933, return: 0.4885 },
@@ -40,7 +41,6 @@ const HISTORICAL_DATA = [
 
 const GEO_MEAN = 0.067; 
 
-// --- THE FIX: Define 'App' properly before using hooks inside it ---
 const App = () => {
   const [initialWealth, setInitialWealth] = useState(1000000);
   const [withdrawalRate, setWithdrawalRate] = useState(4.0);
@@ -222,7 +222,7 @@ const App = () => {
             </div>
           </div>
 
-          <div className="bg-purple-50 p-6 rounded-xl border border-purple-100">
+          <div className="bg-purple-50 p-6 rounded-xl border border-purple-100 mb-6">
              <h3 className="text-purple-900 font-semibold mb-2 flex items-center gap-2">
                 <Info className="w-4 h-4"/> Risk of Ruin
              </h3>
@@ -238,6 +238,18 @@ const App = () => {
 
         <div className="lg:col-span-9 space-y-6">
             
+            {/* NEW: Data Explainer Box in Top Right */}
+            <div className="bg-slate-100 p-4 rounded-xl border border-slate-200">
+                <h3 className="text-slate-700 font-semibold mb-2 flex items-center gap-2 text-sm uppercase tracking-wide">
+                    <Database className="w-4 h-4"/> Data Source
+                </h3>
+                <ul className="text-xs text-slate-600 space-y-1 list-disc pl-4">
+                    <li><strong>Source:</strong> S&P 500 Returns (Total Return including dividends) from 1928 to 2023.</li>
+                    <li><strong>Inflation Adjusted:</strong> All figures are "Real Returns" adjusted for CPI inflation.</li>
+                    <li><strong>Calculations:</strong> The "Assumed Average" uses the Geometric Mean (CAGR) of 6.7% real return.</li>
+                </ul>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className={`p-4 rounded-xl border-2 ${simulationResults.failureRate > 0 ? 'bg-red-50 border-red-200' : 'bg-emerald-50 border-emerald-200'}`}>
                     <div className="text-sm text-slate-500 font-medium uppercase tracking-wider mb-1">Historical Failure Rate</div>
@@ -260,7 +272,7 @@ const App = () => {
                     <div className="text-2xl font-bold text-slate-400 dashed-text">
                         {formatCurrency(simulationResults.avgTerminal)}
                     </div>
-                    <div className="text-xs text-slate-400 mt-1">Assumed 6.7% Annual Return</div>
+                    <div className="text-xs text-slate-400 mt-1">Assumed 6.7% (Inflation Adj.) Return</div>
                 </div>
             </div>
 
@@ -318,7 +330,7 @@ const App = () => {
                                 <Legend wrapperStyle={{ paddingTop: '20px' }}/>
                                 <ReferenceLine y={0} stroke="red" strokeDasharray="3 3" />
 
-                                <Line type="monotone" dataKey="Average" name="Assumed Average (6.7%)" stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" dot={false} />
+                                <Line type="monotone" dataKey="Average" name="Assumed Average (6.7% Real)" stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" dot={false} />
                                 <Line type="monotone" dataKey="Best" name={`Best Start`} stroke="#10b981" strokeWidth={2} dot={false} opacity={0.6} />
                                 <Line type="monotone" dataKey="Median" name="Median Historical" stroke="#9333ea" strokeWidth={3} dot={false} />
                                 <Line type="monotone" dataKey="Worst" name={`Worst Start`} stroke="#ef4444" strokeWidth={3} dot={false} />
