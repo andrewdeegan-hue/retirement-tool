@@ -159,7 +159,7 @@ const App = () => {
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
       
       <div className="max-w-7xl mx-auto w-full mb-8">
-        <h1 className="text-3xl font-bold text-purple-900 mb-2">Sequence of Returns Risk Analyzer</h1>
+        <h1 className="text-3xl font-bold text-purple-900 mb-2">Sequence of Returns Risk Analyser</h1>
         <p className="text-slate-600 max-w-3xl">
           This dashboard demonstrates why using an "Average Return" assumption is dangerous for retirement planning. 
           Even if the long-term average is positive, the <strong>order</strong> of returns matters. Bad timing early in retirement (drawdown) can deplete a portfolio, a risk hidden by simple averages.
