@@ -75,6 +75,7 @@ const App = () => {
         let currentWealth = initialWealth;
         let path = [];
         let failed = false;
+        let ruinYear = null;
 
         for (let j = 0; j <= duration; j++) {
             path.push({ year: j, wealth: currentWealth });
@@ -84,6 +85,10 @@ const App = () => {
                  if (currentWealth < 0) {
                      currentWealth = 0;
                      failed = true;
+                     // Capture the specific calendar year the money ran out
+                     if (ruinYear === null) {
+                        ruinYear = HISTORICAL_DATA[i + j].year;
+                     }
                  }
             }
         }
@@ -93,6 +98,7 @@ const App = () => {
             terminalWealth: currentWealth, 
             path, 
             failed,
+            ruinYear, // Store the year of failure
             endYear: startYear + duration
         };
         allOutcomes.push(outcomeData);
@@ -159,7 +165,7 @@ const App = () => {
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-800 p-4 md:p-8">
       
       <div className="max-w-7xl mx-auto w-full mb-8">
-        <h1 className="text-3xl font-bold text-purple-900 mb-2">Sequence of Returns Risk Analyser</h1>
+        <h1 className="text-3xl font-bold text-purple-900 mb-2">Sequence of Returns Risk Analyzer</h1>
         <p className="text-slate-600 max-w-3xl">
           This dashboard demonstrates why using an "Average Return" assumption is dangerous for retirement planning. 
           Even if the long-term average is positive, the <strong>order</strong> of returns matters. Bad timing early in retirement (drawdown) can deplete a portfolio, a risk hidden by simple averages.
@@ -238,7 +244,6 @@ const App = () => {
 
         <div className="lg:col-span-9 space-y-6">
             
-            {/* NEW: Data Explainer Box in Top Right */}
             <div className="bg-slate-100 p-4 rounded-xl border border-slate-200">
                 <h3 className="text-slate-700 font-semibold mb-2 flex items-center gap-2 text-sm uppercase tracking-wide">
                     <Database className="w-4 h-4"/> Data Source
@@ -362,6 +367,15 @@ const App = () => {
                                                 <p className={`text-sm font-semibold ${data.terminalWealth === 0 ? 'text-red-600' : 'text-slate-700'}`}>
                                                     End Wealth: {formatCurrency(data.terminalWealth)}
                                                 </p>
+                                                {/* NEW: Ruin Year Warning */}
+                                                {data.terminalWealth === 0 && data.ruinYear && (
+                                                    <div className="mt-2 pt-2 border-t border-slate-100">
+                                                        <p className="text-xs font-bold text-red-600 flex items-center gap-1">
+                                                            <AlertTriangle className="w-3 h-3" />
+                                                            Ran out in {data.ruinYear}
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
                                         );
                                         }
